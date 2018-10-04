@@ -1,0 +1,284 @@
+'''
+**************** test sequence *****************
+
+# Lego Technic 8094
+#import GPIO library                       line 1
+import RPi.GPIO as GPIO
+#set GPIO numbering mode and defing        line 3
+GPIO.setmode(GPIO.BOARD)
+from time import sleep
+# pin 8 is GPIO 14 in MagPi                line 5
+# White wire = 03 | SLEW
+# Grey wire  = 07 | SLEW
+
+# Purple     = 09 | LIFTING CYCLE
+# Blue       = 29 | LIFTING CYCLE
+
+GPIO.setup(3,GPIO.OUT)
+GPIO.setup(7,GPIO.OUT)
+
+def OneHunderedAndEightyDegreeClockwiseSlew():
+    GPIO.output(3, False)
+    GPIO.output(7, True)
+    sleep(21.5)
+
+OneHunderedAndEightyDegreeClockwiseSlew()
+
+# anticloskwise
+#GPIO.output(3, True)
+#GPIO.output(7, False)
+#sleep(1)
+
+# stationary
+#GPIO.output(3, False)
+#GPIO.output(7, False)
+#sleep(1)
+
+# anticloskwise
+#GPIO.output(3, True)
+#GPIO.output(7, False)
+#sleep(1)
+
+# stationary
+#GPIO.output(3, False)
+#GPIO.output(7, False)
+#sleep(1)
+
+# clockwise
+#GPIO.output(3, False)
+#GPIO.output(7, True)
+#sleep(1)
+
+# pins to zero
+GPIO.output(3, False)
+GPIO.output(7, False)
+
+
+
+#GPIO.output(3, True)
+#sleep(1)
+#GPIO.setup(5,GPIO.OUT)
+#GPIO.output(7, True)
+#sleep(1)
+#GPIO.output(7, False)
+#sleep(1)
+#GPIO.output(7, True)
+#sleep(1)
+# GPIO.cleanup()
+'''
+
+
+#import GPIO library                       line 1
+import RPi.GPIO as GPIO
+#set GPIO numbering mode and defing        line 3
+GPIO.setmode(GPIO.BOARD)
+from time import sleep
+# pin 8 is GPIO 14 in MagPi                line 5
+# White wire = 03
+# Grey wire  = 07
+# Purple     = 09
+# Blue       = 29
+
+GPIO.setup(3,GPIO.OUT)
+GPIO.setup(7,GPIO.OUT)
+
+GPIO.output(3, True)
+sleep(1)
+GPIO.output(3, False)
+sleep(1)
+#GPIO.output(3, True)
+#sleep(1)
+
+#GPIO.setup(5,GPIO.OUT)
+
+#GPIO.output(7, True)
+#sleep(1)
+#GPIO.output(7, False)
+#sleep(1)
+#GPIO.output(7, True)
+#sleep(1)
+
+GPIO.cleanup()
+'''
+*****************use of the class keyword******************
+'''
+import time
+import "playsound"
+import H bridge
+import GPIO
+import Healey metal song.wav
+play heavymetalsong.wav
+#length of heavy metal song
+songlength = 6*60+17 # (seconds)
+Tempo = # sample length / beats)
+#beats per minuet
+onebeat = X*tempo
+onebar = (X/4)*tempo # (if the song is in 4/4 time signature
+
+Define class movement headbang
+If true
+	Lift arm
+	sleep one beat
+repeat 2 times
+repeat 4 times
+
+Define class movement swan slew
+If true
+	rotate arm slowley
+	move arm up and down slowley
+repeat for 2 bars
+
+
+'''
+**************curses*******************
+'''
+import curses
+
+screen = curses.initscr()
+event = screen.getch()
+
+if event == curses.KEY_LEFT:
+    print("Left Arrow Key pressed")
+elif event == curses.KEY_RIGHT:
+    print("Right Arrow Key pressed")
+else:
+    print(event)
+
+
+*********recording angles by time motor is powered for and pwm frequency and duty cycle******
+
+import RPi.GPIO as GPIO
+from time import sleep
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(7,GPIO.OUT)
+GPIO.setup(11,GPIO.OUT)
+GPIO.output(7, False)
+GPIO.output(11, False)
+# my_pwm = GPIO.PWM(pin,Hz)
+my_pwm = GPIO.PWM(7,100)
+# my_pwm.start(DutyCycle)
+# speed 45<DutyCycle<100
+# my_pwm.start(100)
+angle = raw_imput("Please enter the angle which you would like the crane slewed at: ")
+#while angle < 10:
+#    print angle
+#    angle = angle + 1
+#    time.sleep(1)
+GPIO.output(7, False)
+GPIO.output(11, False)
+
+
+************* control from keyboard ***************
+
+# 9v battery connect
+
+import pygame
+import sys
+import os
+from pygame.locals import *
+import RPi.GPIO as GPIO
+
+GPIO_pin_White = 7
+GPIO_pin_Grey = 11
+
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(GPIO_pin_White,GPIO.OUT)
+GPIO.setup(GPIO_pin_Grey,GPIO.OUT)
+
+pygame.init()
+screen = pygame.display.set_mode((640, 480))
+pygame.display.set_caption('Left Right')
+
+key_state_map = {K_LEFT: False, K_RIGHT: False}
+
+def all_pins_off():
+    GPIO.output(PIO_pin_White, False)
+    GPIO.output(PIO_pin_Grey, False)
+    
+def detect_key(keys, key_to_detect, key_state_map, GPIOPin, not_with_keys):
+    if keys[key_to_detect]:
+        
+        #This key is pressed, make sure not with keys are not also pressed
+        for not_with_key in not_with_keys:
+            if key_state_map[not_with_key]:
+                os.system("aplay /home/pi/python_games/badswap.wav")
+                print("You can't press these keys together")
+                return
+            
+        if key_state_map[key_to_detect] == False:
+            key_state_map[key_to_detect] = True
+            #print("ON")
+            GPIO.output(GPIOPin, True)
+            #os.system("aplay /home/pi/python_games/badswap.wav")
+    else:
+        if key_state_map[key_to_detect] == True:           
+            key_state_map[key_to_detect] = False
+            #print("OFF")
+            GPIO.output(GPIOPin, False)
+            #os.system("aplay /home/pi/python_games/match2.wav")
+
+
+all_pins_off
+
+running = True
+while running:
+    pygame.event.pump()
+    keys = pygame.key.get_pressed()
+    if keys[K_ESCAPE]:
+        running = False
+    
+    detect_key(keys, K_LEFT, key_state_map, GPIO_pin_White, [K_RIGHT])
+    detect_key(keys, K_RIGHT, key_state_map, GPIO_pin_Grey, [K_LEFT])
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+
+all_pins_off
+GPIO.cleanup()
+
+pygame.quit();
+sys.exit;
+
+# 9v battery disconnect
+
+'''
+
+clockwise_slew_time
+lift_time
+extend_time
+
+extend_angle
+lift_angle
+
+'''
+
+
+current_angle = 0
+print "The current angle is " + str(current_angle) + " degrees."
+requested_angle = 5
+requested_angle = input("What angle would you like the crane slewed at? ")
+movement_angle = requested_angle - current_angle
+if movement_angle < 0:
+    direction = "anticlockwise"
+else:
+    direction = "clockwise"
+print "The crane will move " + str(abs(movement_angle)) +" degrees " + direction
+from time import sleep
+t = 5
+while t > 0:
+    print t
+    t = t - 1
+    sleep(1)
+import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(7,GPIO.OUT)
+GPIO.setup(11,GPIO.OUT)
+GPIO.output(7, False)
+GPIO.output(11, False)
+my_pwm = GPIO.PWM(7,100)
+my_pwm.start(100)
+sleep(movement_angle)
+GPIO.output(7, False)
+GPIO.output(11, False)
