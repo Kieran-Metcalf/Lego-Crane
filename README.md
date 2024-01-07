@@ -1,4 +1,4 @@
-# This is a public script and a work in progress. 
+
 # A RPi project to control the vintage Technic Lego Crane, built from the 8094 set with PWM, the aim is to estimate the slew position, the lift and the extend, by setting initial conditions and logging the duty cycle, frequency, time and polarity of the signal through the H Bridge.  
 
 STAR Python Control Script
